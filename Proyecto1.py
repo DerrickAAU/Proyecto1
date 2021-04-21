@@ -3,6 +3,113 @@ Proyecto
 """
 
 """
+Nombre: Convertir la lista en string
+"""
+def convertirstr(lista):
+    if isinstance(lista, list):
+        string = ""
+        for indice in lista:
+            string += indice
+        return string
+    else:
+        print("Error: no se puede convertir a String, porque, el tipo de dato de entrada, no es una lista")
+        
+#----------------------------------------------------------
+        
+"""
+Nombre: Cantidad de indices
+"""
+def cantidadDeindices(convertirstr):
+    if convertirstr == "" or convertirstr==[]:
+        return 0
+    else:
+        return 1+ cantidadDeindices(convertirstr[1:])
+
+#----------------------------------------------------------
+    
+"""
+Nombre: Verificar si el indice se encuentra
+"""
+
+def seEncuentra(buscar,convertirstr):
+    indicesBuscar= cantidadDeindices(buscar)
+    if isinstance(convertirstr,list):
+        return seEncuentraA(buscar,indicesBuscar,convertirstr,0)
+    else:
+        return seEncuentraEnstring(buscar,convertirstr,indicesBuscar)
+
+def seEncuentraA(buscar,indicesBuscar,lista,cont):
+    if lista == []:
+        return False
+    else:
+        if seEncuentraEnstring(buscar,lista[0],indicesBuscar):
+            return True
+        else:
+            return seEncuentraA(buscar,indicesBuscar,lista[1:],cont +1)
+
+def seEncuentraEnstring(buscar,cadena,indicesBuscar):
+    if cadena =="":
+        return False
+    else:
+        if buscar== cadena [0: indicesBuscar]:
+            return True
+        else:
+            return seEncuentraEnstring(buscar,cadena[1:], indicesBuscar)
+
+"""
+Nombre: Es númerico
+Entrada: cadena
+salida: True si todos los caracteres de la entrada corresponde a númerico
+"""
+def esNumerico(cadena):
+    if (cadena ==""):
+        return True
+    else:
+        primerCaracter=cadena[0]
+        if(primerCaracter =="0" or primerCaracter =="1" or primerCaracter=="2" or primerCaracter =="3" or primerCaracter =="4"):
+            return True and esNumerico(cadena=cadena[1:])
+        elif(primerCaracter == "5" or primerCaracter == "6" or primerCaracter == "7" or primerCaracter == "8" or primerCaracter == "9" or primerCaracter =="10"):
+            return True and esNumerico(cadena=cadena[1:])
+        else:
+            return False
+        
+#------------------------------------------------------------------------------
+def eliminarInformacion(listaEmpresas, indice, cont):
+    if cont==2:
+        return convertir_a_string(listaEmpresas)
+    else:
+        listaEmpresas.pop(indice)
+        return eliminarInformacion(listaEmpresas, indice, cont + 1)
+
+#--------------------------------------------------------------------------------
+def mostrarEmpresas(listaEmpresas, indice, cont):
+    if cont > 2:
+        print("-------------------------------------")
+    else:
+        if(cont == 0):
+            print("Cédula juridica: " + listaEmpresas[indice][0:-1])
+            return mostrarEmpresas(listaEmpresas, indice + 1, cont + 1)
+        elif(cont == 1):
+            print("Nombre de la empresa: ", listaEmpresas[indice][0:-1])
+            return mostrarEmpresas(listaEmpresas, indice + 1, cont + 1)
+        else:
+            print("Ubicación de la empresa: ", listaEmpresas[indice][0:-1])
+            return mostrarEmpresas(listaEmpresas, indice + 1, cont + 1)
+
+
+#---------------------------------------------------------------------------------
+def convertir_a_string(lista):
+    if isinstance(lista, list):
+        string = ""
+        for indice in lista:  # Se leen las lineas del archivo y guarda en un una variable
+            string += indice
+        return string
+    else:
+        print("Error: no se puede convertir a String, porque, el tipo de dato de entrada, no es una lista")
+
+
+#---------------------------------------------------------------------------------        
+"""
 ***************************************************************************
 *COMPROBAR SI LA OPCIÓN DIGITADA ES VÁLIDA*
 ***************************************************************************
@@ -87,30 +194,31 @@ def comprabarEmpresas():
 #----------------------------------------------------------------------
 """
 Nombre: permitirAcceso
-Entrada: La calve de acceso
+Entrada: La clave de acceso
 Salida: El retorno a la administracion
 Restricciones: Que sea la calve registrada en el sistema
 """
+
 def comprobarAcceso():
     print("\nPara acceder a la administracion, se requiere una clave de acceso")
     clave = input("Digite la clave de acceso: ")
     return comprobarAcceso_aux(clave)
 
+
 def comprobarAcceso_aux(clave):
     Clave1 = comprobarClave()
     validarClave = validarC(clave, Clave1)
-    if (validarClave):
+    if(validarClave):
         return administracion()
     else:
         return False
 
 def validarC(clave, Clave1):
-    if (("clave:"+clave) in Clave1):
-        return administracion()
+    if(seEncuentra(clave,Clave1)):
+        return "Clave correcta"
     else:
         print("CLAVE INCORRECTA, por favor intentar de nuevo")
         return comprobarAcceso()    
-
 
 #-----------------------------------------------------------------------
 def administracion():
@@ -148,10 +256,10 @@ def administracion():
         
 #-------------------------------------------------------------------------------------
 """
-Nombre: gestionEmpresa
-Entrada:
-Salida:
-Restricciones:
+Nombre: gestionEmpresas
+Entrada: no posee
+Salida: opciones distintas a eligir
+Restricciones: no posee
 """
 def gestionEmpresas():
     print("\n----------GESTIÓN DE EMPRESAS----------\n")
@@ -163,9 +271,15 @@ def gestionEmpresas():
     eleccion = input("\nDigite una nueva opcion del menú Gestión de Empresas: ")
     if(validar(eleccion)):
         if(eleccion == "111"):
-            return añadirEmpresa()
+            print("\n-----AÑADIR EMPRESA-----\n")
+            cedula = input("Digite su cedula juridica: ")
+            nombre = input("Digite el nombre de la empresa: ")
+            ubicacion = input("Digite la ubicacion de la empresa: ")
+            return añadirEmpresa(cedula, nombre, ubicacion)
         elif(eleccion == "112"):
-            return eliminarEmpresa()
+            cedula = input("Digite el numero de cedula de la empresa a eliminar")
+            if cedula != "":
+                return borrarEmpresa(cedula)
         elif(eleccion == "113"):
             return modificarEmpresa()
         elif(eleccion == "114"):
@@ -179,21 +293,43 @@ def gestionEmpresas():
         return gestionEmpresas()
             
 #-----------------------------------------------------------------------------------
-def añadirEmpresa():
-    print("\n-----AÑADIR EMPRESA-----\n")
-    cedula = input("Digite su cedula juridica: ")
-    nombre = input("Digite su nombre: ")
-    ubicacion = input("Digite la direcccion del negocio: ")
+"""
+Nombre: añadirEmpresa
+Entrada: no posee
+Salida: Que se ha añadido exitosamente la empresa
+Restricciones: la cedula debe contener diez digitos
+"""
+def añadirEmpresa(cedula, nombre, ubicacion):
+    Empresas = open("Empresas.txt","a")
+    Empresas.write(cedula + "\n")
+    Empresas.write(nombre + "\n")
+    Empresas.write(ubicacion + "\n")
+    Empresas.write("--------------------------------------" + "\n")
+    Empresas.close()
+    print("\n---NUEVA EMPRESA AGREGADA CORRECTAMENTE---")
+    return administracion()
     
+#---------------------------------------------------------------------------
+def borrarEmpresa(cedula):
+    print("-----------BORRANDO EMPRESA-----------")
+    Empresas = open("Empresas.txt")
+    listaEmpresas = Empresas.readlines()
+    if (seEncuentra(cedula + "\n", listaEmpresas)):
+        indice = listaEmpresas.index(cedula + "\n")
+        mostrarEmpresas(listaEmpresas, indice, 0)
+        listaEmpresas = eliminarInformacion(listaEmpresas, indice, 0)
+        Empresas.close()
+        Empresas = open("contactos.txt", "w")
+        Empresas.write(listaEmpresas)
+        Empresas.close()
+        print("\nEmpresa borrada exitosamente")
+        return gestionEmpresas()
+    else:
+        print("\nNo hay ninguna Empresa registrada con la cédula ", cedula)
+        Empresas.close()
+        return gestionEmpresas()
 
     
-
-
-
-
-
-
-
 
 
 
