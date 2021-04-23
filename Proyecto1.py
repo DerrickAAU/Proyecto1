@@ -75,9 +75,10 @@ def esNumerico(cadena):
         
 #------------------------------------------------------------------------------
 def eliminarInformacion(listaEmpresas, indice, cont):
-    if cont==2:
-        return convertir_a_string(listaEmpresas)
+    if cont==4:
+        return convertirstr(listaEmpresas)
     else:
+        print(listaEmpresas[indice].strip())
         listaEmpresas.pop(indice)
         return eliminarInformacion(listaEmpresas, indice, cont + 1)
 
@@ -108,7 +109,20 @@ def convertir_a_string(lista):
         print("Error: no se puede convertir a String, porque, el tipo de dato de entrada, no es una lista")
 
 
-#---------------------------------------------------------------------------------        
+#---------------------------------------------------------------------------------
+"""
+Nombre: Validar cédula 
+"""
+def cedValidar( cedula,Empresas):
+    if (seEncuentra(cedula + "\n", Empresas)):
+        return False
+    else:
+        if(cantidadDeindices(cedula) == 10 and isinstance(int(cedula), int)):
+            return True
+        else:
+            print("\nERROR: La cédula no contiene 10 dígitos exactos, vuelva intentar")
+            return gestionEmpresas()
+        
 """
 ***************************************************************************
 *COMPROBAR SI LA OPCIÓN DIGITADA ES VÁLIDA*
@@ -277,9 +291,12 @@ def gestionEmpresas():
             ubicacion = input("Digite la ubicacion de la empresa: ")
             return añadirEmpresa(cedula, nombre, ubicacion)
         elif(eleccion == "112"):
-            cedula = input("Digite el numero de cedula de la empresa a eliminar")
+            cedula = input("Digite el numero de cédula de la empresa a eliminar: ")
             if cedula != "":
                 return borrarEmpresa(cedula)
+            else:
+                print("Debe añadir una cédula, esta opción no puede estar vacía")
+                return gestionEmpresas()
         elif(eleccion == "113"):
             return modificarEmpresa()
         elif(eleccion == "114"):
@@ -300,27 +317,35 @@ Salida: Que se ha añadido exitosamente la empresa
 Restricciones: la cedula debe contener diez digitos
 """
 def añadirEmpresa(cedula, nombre, ubicacion):
-    Empresas = open("Empresas.txt","a")
-    Empresas.write(cedula + "\n")
-    Empresas.write(nombre + "\n")
-    Empresas.write(ubicacion + "\n")
-    Empresas.write("--------------------------------------" + "\n")
-    Empresas.close()
-    print("\n---NUEVA EMPRESA AGREGADA CORRECTAMENTE---")
-    return administracion()
+    Empresas=open("Empresas.txt")
+    Empresas1=Empresas.readlines()
+    validarCedula= cedValidar(cedula,Empresas1)
+    if(validarCedula):
+        Empresas=open("Empresas.txt","a")
+        Empresas.write(cedula + "\n")
+        Empresas.write(nombre + "\n")
+        Empresas.write(ubicacion + "\n")
+        Empresas.write("--------------------------------------" + "\n")
+        Empresas.close()
+        print("\n---NUEVA EMPRESA AGREGADA CORRECTAMENTE---\n")
+        return gestionEmpresas()
+    else:
+        print("\nEsta cedula ya está registrada, intente de nuevo")
+        return gestionEmpresas()
+
     
 #---------------------------------------------------------------------------
 def borrarEmpresa(cedula):
-    print("-----------BORRANDO EMPRESA-----------")
     Empresas = open("Empresas.txt")
     listaEmpresas = Empresas.readlines()
-    if (seEncuentra(cedula + "\n", listaEmpresas)):
-        indice = listaEmpresas.index(cedula + "\n")
-        mostrarEmpresas(listaEmpresas, indice, 0)
-        listaEmpresas = eliminarInformacion(listaEmpresas, indice, 0)
+    if(seEncuentra(cedula+"\n",listaEmpresas)):
+        print("-----------BORRANDO EMPRESA-----------\n")
+        cedula=str(cedula)
+        indice = listaEmpresas.index(cedula+"\n")
+        cedula = eliminarInformacion(listaEmpresas, indice, 0)
         Empresas.close()
-        Empresas = open("contactos.txt", "w")
-        Empresas.write(listaEmpresas)
+        Empresas = open("Empresas.txt", "w")
+        Empresas.write(cedula)
         Empresas.close()
         print("\nEmpresa borrada exitosamente")
         return gestionEmpresas()
