@@ -4,6 +4,10 @@ Proyecto
 
 """
 Nombre: Convertir la lista en string
+Entrada: lista
+Parametros: lista
+Salida: un string
+Restricciones: La entrada debe ser una lista
 """
 def convertirstr(lista):
     if isinstance(lista, list):
@@ -18,6 +22,10 @@ def convertirstr(lista):
         
 """
 Nombre: Cantidad de indices
+Entrada: sin estrada
+Parametros: convertirstr
+Salida: sin salida
+Restricciones: sin restriccion
 """
 def cantidadDeindices(convertirstr):
     if convertirstr == "" or convertirstr==[]:
@@ -28,7 +36,11 @@ def cantidadDeindices(convertirstr):
 #----------------------------------------------------------
     
 """
-Nombre: Verificar si el indice se encuentra
+Nombre: seEncuentra
+Entrada: lo que se va buscar y los dattos en str
+Parametros: buscar,covertirstr
+Salida: True o False
+Restricciones: sin restricciones
 """
 
 def seEncuentra(buscar,convertirstr):
@@ -58,8 +70,10 @@ def seEncuentraEnstring(buscar,cadena,indicesBuscar):
 
 """
 Nombre: Es númerico
-Entrada: cadena
-salida: True si todos los caracteres de la entrada corresponde a númerico
+Entrada: una cadena
+Parametros: cadena
+Salida: True o False
+Restricciones: sin restricciones
 """
 def esNumerico(cadena):
     if (cadena ==""):
@@ -74,6 +88,13 @@ def esNumerico(cadena):
             return False
         
 #------------------------------------------------------------------------------
+"""
+Nombre: eliminarInformacion
+Entrada: una lista a eliminar
+Parametros: listaEmpresas, indice, cont
+Salida: sin salida, solo elimina la informacion
+Restricciones: sin restricciones
+"""
 def eliminarInformacion(listaEmpresas, indice, cont):
     if cont==4:
         return convertirstr(listaEmpresas)
@@ -83,6 +104,13 @@ def eliminarInformacion(listaEmpresas, indice, cont):
         return eliminarInformacion(listaEmpresas, indice, cont + 1)
 
 #--------------------------------------------------------------------------------
+"""
+Nombre: mostrarEmpresas
+Entrada: datos a mostrar
+Parameteros: listaEmpresas, indice, cont
+Salida: muestra en pantalla los datos
+Restricciones: sin restricciones
+"""
 def mostrarEmpresas(listaEmpresas, indice, cont):
     if cont > 2:
         print("-------------------------------------")
@@ -99,6 +127,13 @@ def mostrarEmpresas(listaEmpresas, indice, cont):
 
 
 #---------------------------------------------------------------------------------
+"""
+Nombre: convertir_a_string
+Entrada: una lista
+Parametro: lista
+Salida: datos string
+Restricciones: sin restricciones
+"""
 def convertir_a_string(lista):
     if isinstance(lista, list):
         string = ""
@@ -111,7 +146,11 @@ def convertir_a_string(lista):
 
 #---------------------------------------------------------------------------------
 """
-Nombre: Validar cédula 
+Nombre: cedValidar
+Entrada: cedula a validar
+Parametros: cedula,Empresas
+Salida: True o False
+Restricciones: la cedula debe contener 10 digitos
 """
 def cedValidar( cedula,Empresas):
     if (seEncuentra(cedula + "\n", Empresas)):
@@ -124,13 +163,14 @@ def cedValidar( cedula,Empresas):
             return gestionEmpresas()
         
 """
-***************************************************************************
+*******************************************
 *COMPROBAR SI LA OPCIÓN DIGITADA ES VÁLIDA*
-***************************************************************************
-•Nombre: validar
-•Entradas: opcion
-•Salidas: True si la entráda es un String. False si la entrada no es un String. 
-•Restricciones: La entrada debe ser un String.
+*******************************************
+Nombre: validar
+Entradas: la opcion
+Parametros: opcion
+Salidas: True si la entráda es un String. False si la entrada no es un String. 
+Restricciones: La entrada debe ser un String.
 """
 def validar(opcion):
     if (isinstance(opcion, str) and opcion != ""):
@@ -142,15 +182,15 @@ def validar(opcion):
 print("Bienvenida/o a al sistema de reservacion de boletos. \n")
 
 """
-****************************
+****************
 *MENÚ PRINCIPAL*
-****************************
-•Nombre: sistemaDeReservación
-•Entradas: no posee.
-•Salidas: menú principal de la agenda de contactos.
-•Restricciones: no posee.
+****************
+Nombre: sistemaDeReservación
+Entradas: no posee.
+Parametros: no posee
+Salidas: menú principal de la agenda de contactos.
+Restricciones: no posee.
 """
-
 
 def sistemaDeReservacion():
     print("І-------------------------MENÚ PRINCIPAL-------------------------І\n")
@@ -173,7 +213,10 @@ def sistemaDeReservacion():
             print("***********************")
             print("***UN GUSTO SERVIRLE***")
             print("***********************")
-            
+            print("\n-----Semestre I - Proyecto #1-----")
+            print("Creado por: ")
+            print("     Derrick Acosta Ulloa")
+            input()
         else:
             print("La opcion digitada no es correcta, favor ingresar el numero de la opcion a elegir.")
             return sistemaDeReservación()
@@ -184,7 +227,9 @@ def sistemaDeReservacion():
 """
 Nombre: comprobarAcceso
 Entrada: Usuario y Contraseña
+Parametros: no posee
 Salida: Si el usuario y contraseña esta en el sistema, permite el acceso, de lo contrario lo denegará y permitirá registrarse
+Restricciones: no posee
 """
 def comprobarClave():
     Clave = open("Clave.txt")
@@ -196,6 +241,7 @@ def comprobarClave():
 """
 Nombre: ComprobarEmpresa
 Entrada; No posee
+Parametros: no posee
 Salida: Retorna una funcion
 Restricciones: No posee
 """
@@ -209,6 +255,7 @@ def comprabarEmpresas():
 """
 Nombre: permitirAcceso
 Entrada: La clave de acceso
+Parameteros: no posee
 Salida: El retorno a la administracion
 Restricciones: Que sea la calve registrada en el sistema
 """
@@ -235,30 +282,37 @@ def validarC(clave, Clave1):
         return comprobarAcceso()    
 
 #-----------------------------------------------------------------------
+"""
+Nombre: administracion
+Entrada: no posee
+Parametros: no posee
+Salida: Es el menu de la administracion, opciones a elegir
+Restricciones: no posee
+"""
 def administracion():
     print("\n*******************************************")
     print("*BIENVENID@ A LAS OPCIONES ADMINISTRATIVAS*")
     print("*******************************************\n")
     print("----ELIJA UNA DE LAS SIGUIENTES OPCIONES----\n")
-    print("11. Gestion de empresa")
-    print("12. Gestion de transporte por empresa")
-    print("13. Gestion de viaje")
-    print("14. Consultar historial de reservaciones")
-    print("15. Estadistica de viaje")
-    print("16. Volver al menú principal")
+    print("1. Gestion de empresa")
+    print("2. Gestion de transporte por empresa")
+    print("3. Gestion de viaje")
+    print("4. Consultar historial de reservaciones")
+    print("5. Estadistica de viaje")
+    print("6. Volver al menú principal")
     eleccion = input("\nDigite una nueva opcion del menú administrativo: ")
     if(validar(eleccion)):
-        if(eleccion == "11"):
+        if(eleccion == "1"):
             return gestionEmpresas()
-        elif(eleccion == "12"):
+        elif(eleccion == "2"):
             return gestionTransporteEmpresa()
-        elif(eleccion == "13"):
+        elif(eleccion == "3"):
             return gestionViaje()
-        elif(eleccion == "14"):
+        elif(eleccion == "4"):
             return consultarHistorialReservaciones()
-        elif(eleccion == "15"):
+        elif(eleccion == "5"):
             return estadisticaViaje()
-        elif(eleccion == "16"):
+        elif(eleccion == "6"):
             print("--*Volviendo al menú principal*--")
             return sistemaDeReservacion()
         else:
@@ -272,35 +326,38 @@ def administracion():
 """
 Nombre: gestionEmpresas
 Entrada: no posee
+Parametros: no posee
 Salida: opciones distintas a eligir
 Restricciones: no posee
 """
 def gestionEmpresas():
     print("\n----------GESTIÓN DE EMPRESAS----------\n")
     print("----ELIJA UNA DE LAS SIGUIENTES OPCIONES----\n")
-    print("111. Añadir una empresa")
-    print("112. Eliminar una empresa")
-    print("113. Modificar una empresa")
-    print("114. Volver al menú de opciones administrativas")
+    print("1. Añadir una empresa")
+    print("2. Eliminar una empresa")
+    print("3. Modificar una empresa")
+    print("4. Volver al menú de opciones administrativas")
     eleccion = input("\nDigite una nueva opcion del menú Gestión de Empresas: ")
     if(validar(eleccion)):
-        if(eleccion == "111"):
+        if(eleccion == "1"):
             print("\n-----AÑADIR EMPRESA-----\n")
             cedula = input("Digite su cedula juridica: ")
             nombre = input("Digite el nombre de la empresa: ")
             ubicacion = input("Digite la ubicacion de la empresa: ")
             return añadirEmpresa(cedula, nombre, ubicacion)
-        elif(eleccion == "112"):
+        elif(eleccion == "2"):
             cedula = input("Digite el numero de cédula de la empresa a eliminar: ")
             if cedula != "":
                 return borrarEmpresa(cedula)
             else:
                 print("Debe añadir una cédula, esta opción no puede estar vacía")
                 return gestionEmpresas()
-        elif(eleccion == "113"):
-            return modificarEmpresa()
-        elif(eleccion == "114"):
-            print("-----Volviendo al menú administrativo-----")
+        elif(eleccion == "3"):
+            cedula=input("Digite el numero de cedula de la Empresa ingresada: ")
+            if cedula!="":
+                return modificarEmpresas(cedula)
+        elif(eleccion == "4"):
+            print("\n-----Volviendo al menú administrativo-----\n")
             return administracion()
         else:
             print("La opcion digitada no se encuentra. Por favor intenta otra vez")
@@ -312,8 +369,9 @@ def gestionEmpresas():
 #-----------------------------------------------------------------------------------
 """
 Nombre: añadirEmpresa
-Entrada: no posee
-Salida: Que se ha añadido exitosamente la empresa
+Entrada: la cedula,nombre y ubicacion de la empresa
+Parametros: cedula,nombre,ubicacion
+Salida: Que se ha añadido exitosamente la empresa o error
 Restricciones: la cedula debe contener diez digitos
 """
 def añadirEmpresa(cedula, nombre, ubicacion):
@@ -335,6 +393,13 @@ def añadirEmpresa(cedula, nombre, ubicacion):
 
     
 #---------------------------------------------------------------------------
+"""
+Nombre: borrarEmpresa
+Entrada: la cedula de la empresa
+Parametros: cedula
+Salida:Que la empresa se ha borrado exitosamente
+Restricciones: sin restricciones
+"""
 def borrarEmpresa(cedula):
     Empresas = open("Empresas.txt")
     listaEmpresas = Empresas.readlines()
@@ -353,19 +418,54 @@ def borrarEmpresa(cedula):
         print("\nNo hay ninguna Empresa registrada con la cédula ", cedula)
         Empresas.close()
         return gestionEmpresas()
-
     
+#---------------------------------------------------------------------------
+"""
+Nombre: modificarEmpresas
+Entrada: la cedula de la empresa
+Parametros: cedula
+Salida:Que la empresa se ha borrado exitosamente
+Restricciones: sin restricciones
+"""
+def modificarEmpresas(cedula):
+    Empresas = open("Empresas.txt")
+    listaEmpresas = Empresas.readlines()
+    if(seEncuentra(cedula+"\n",listaEmpresas)):
+        print("\n---SE MODIFICARÁ ESTA EMPRESA---")
+        cedula=str(cedula)
+        indice = listaEmpresas.index(cedula+"\n")
+        cedula = eliminarInformacion(listaEmpresas, indice, 0)
+        Empresas.close()
+        Empresas = open("Empresas.txt", "w")
+        Empresas.write(cedula)
+        Empresas.close()
+        cedula=input("\nDigite la nueva cedula: ")
+        nombre=input("Ingrese el nombre de la empresa: ")
+        ubicacion=input("Ingrese la direccion de la empresa: ")
+        return modificarEmpresas_aux(cedula,nombre,ubicacion)
+    else:
+        print("\nNo hay ninguna Empresa registrada con la cédula ", cedula)
+        Empresas.close()
+        return gestionEmpresas()
 
-
+def modificarEmpresas_aux(cedula,nombre,ubicacion):
+    Empresas=open("Empresas.txt")
+    Empresas1=Empresas.readlines()
+    validarCedula= cedValidar(cedula,Empresas1)
+    if(validarCedula):
+        Empresas=open("Empresas.txt","a")
+        Empresas.write(cedula + "\n")
+        Empresas.write(nombre + "\n")
+        Empresas.write(ubicacion + "\n")
+        Empresas.write("--------------------------------------" + "\n")
+        Empresas.close()
+        print("\n---EMPRESA MODIFICADA CORRECTAMENTE---\n")
+        return gestionEmpresas()
+    else:
+        print("\nEsta cedula ya está registrada, intente de nuevo")
+        return gestionEmpresas()
 
 
 
 sistemaDeReservacion()
-
-
-
-
-
-
-
 
