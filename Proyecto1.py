@@ -33,6 +33,8 @@ def cantidadDeindices(convertirstr):
     else:
         return 1+ cantidadDeindices(convertirstr[1:])
 
+
+
 #----------------------------------------------------------
     
 """
@@ -102,6 +104,16 @@ def eliminarInformacion(listaEmpresas, indice, cont):
         print(listaEmpresas[indice].strip())
         listaEmpresas.pop(indice)
         return eliminarInformacion(listaEmpresas, indice, cont + 1)
+    
+#----------------------------------------------------------------------------
+#Para el transporte
+def eliminarInformacion_aux(listaTransportes, indice, cont):
+    if cont==9:
+        return convertirstr(listaTransportes)
+    else:
+        print(listaTransportes[indice].strip())
+        listaTransportes.pop(indice)
+        return eliminarInformacion_aux(listaTransportes, indice, cont + 1)
 
 #--------------------------------------------------------------------------------
 """
@@ -116,13 +128,13 @@ def mostrarEmpresas(listaEmpresas, indice, cont):
         print("-------------------------------------")
     else:
         if(cont == 0):
-            print("Cédula juridica: " + listaEmpresas[indice][0:-1])
+            print(listaEmpresas[indice][0:-1])
             return mostrarEmpresas(listaEmpresas, indice + 1, cont + 1)
         elif(cont == 1):
-            print("Nombre de la empresa: ", listaEmpresas[indice][0:-1])
+            print(listaEmpresas[indice][0:-1])
             return mostrarEmpresas(listaEmpresas, indice + 1, cont + 1)
         else:
-            print("Ubicación de la empresa: ", listaEmpresas[indice][0:-1])
+            print(listaEmpresas[indice][0:-1])
             return mostrarEmpresas(listaEmpresas, indice + 1, cont + 1)
 
 
@@ -161,7 +173,18 @@ def cedValidar( cedula,Empresas):
         else:
             print("\nERROR: La cédula no contiene 10 dígitos exactos, vuelva intentar")
             return gestionEmpresas()
-        
+
+#-------------------------------------------------------------------------------------
+def matValidar(placa,Transportes):
+    if(seEncuentra(placa + "\n", Transportes)):
+        return False
+    else:
+        if(cantidadDeindices(placa) == 6 and isinstance(int(placa), int)):
+            return  True
+        else:
+            print("\nERROR: La placa no contiene 6 dígitos exactos, vuelva intentar")
+            return gestionTransporteEmpresa()
+#-------------------------------------------------------------------------------------
 """
 *******************************************
 *COMPROBAR SI LA OPCIÓN DIGITADA ES VÁLIDA*
@@ -177,6 +200,27 @@ def validar(opcion):
         return True
     else:
         return False
+#-------------------------------------------------------------
+"""
+Nombre: obtenerListaContactos
+Entradas: no posee
+Salidas: una lista que contiene todas las líneas del archivo contactos.txt
+Restricciones: no posee
+"""
+
+
+def obtenerListaEmpresas():
+    Empresas = open("Empresas.txt")
+    listaEmpresas = Empresas.readlines()
+    Empresas.close()
+    return listaEmpresas
+
+#-------------------------------------------------------------
+def obtenerListaTransportes():
+    Transportes = open("Transportes.txt")
+    listaTransportes = Transportes.readlines()
+    Transportes.close()
+    return listaTransportes
 #-------------------------------------------------------------
 
 print("Bienvenida/o a al sistema de reservacion de boletos. \n")
@@ -313,7 +357,7 @@ def administracion():
         elif(eleccion == "5"):
             return estadisticaViaje()
         elif(eleccion == "6"):
-            print("--*Volviendo al menú principal*--")
+            print("\n----------Volviendo al menú principal----------")
             return sistemaDeReservacion()
         else:
             print("La opcion digitada no se encuentra. Por favor intenta otra vez")
@@ -336,7 +380,8 @@ def gestionEmpresas():
     print("1. Añadir una empresa")
     print("2. Eliminar una empresa")
     print("3. Modificar una empresa")
-    print("4. Volver al menú de opciones administrativas")
+    print("4. Ver todas las empresas")
+    print("5. Volver al menú administrativo")
     eleccion = input("\nDigite una nueva opcion del menú Gestión de Empresas: ")
     if(validar(eleccion)):
         if(eleccion == "1"):
@@ -357,6 +402,11 @@ def gestionEmpresas():
             if cedula!="":
                 return modificarEmpresas(cedula)
         elif(eleccion == "4"):
+            print("-----------MOSTRANDO TODAS LAS EMPRESAS-----------")
+            listaEmpresas = obtenerListaEmpresas()
+            total_indices = cantidadDeindices(listaEmpresas)
+            return verTodaEmpresas(listaEmpresas, total_indices, 0)
+        elif(eleccion == "5"):
             print("\n-----Volviendo al menú administrativo-----\n")
             return administracion()
         else:
@@ -380,9 +430,9 @@ def añadirEmpresa(cedula, nombre, ubicacion):
     validarCedula= cedValidar(cedula,Empresas1)
     if(validarCedula):
         Empresas=open("Empresas.txt","a")
-        Empresas.write(cedula + "\n")
-        Empresas.write(nombre + "\n")
-        Empresas.write(ubicacion + "\n")
+        Empresas.write("Cedula:"+cedula + "\n")
+        Empresas.write("Nombre:"+nombre + "\n")
+        Empresas.write("ubicacion:"+ubicacion + "\n")
         Empresas.write("--------------------------------------" + "\n")
         Empresas.close()
         print("\n---NUEVA EMPRESA AGREGADA CORRECTAMENTE---\n")
@@ -406,7 +456,7 @@ def borrarEmpresa(cedula):
     if(seEncuentra(cedula+"\n",listaEmpresas)):
         print("-----------BORRANDO EMPRESA-----------\n")
         cedula=str(cedula)
-        indice = listaEmpresas.index(cedula+"\n")
+        indice = listaEmpresas.index("Cedula:"+cedula+"\n")
         cedula = eliminarInformacion(listaEmpresas, indice, 0)
         Empresas.close()
         Empresas = open("Empresas.txt", "w")
@@ -433,7 +483,7 @@ def modificarEmpresas(cedula):
     if(seEncuentra(cedula+"\n",listaEmpresas)):
         print("\n---SE MODIFICARÁ ESTA EMPRESA---")
         cedula=str(cedula)
-        indice = listaEmpresas.index(cedula+"\n")
+        indice = listaEmpresas.index("Cedula:"+cedula+"\n")
         cedula = eliminarInformacion(listaEmpresas, indice, 0)
         Empresas.close()
         Empresas = open("Empresas.txt", "w")
@@ -454,9 +504,9 @@ def modificarEmpresas_aux(cedula,nombre,ubicacion):
     validarCedula= cedValidar(cedula,Empresas1)
     if(validarCedula):
         Empresas=open("Empresas.txt","a")
-        Empresas.write(cedula + "\n")
-        Empresas.write(nombre + "\n")
-        Empresas.write(ubicacion + "\n")
+        Empresas.write("Cedula:"+cedula + "\n")
+        Empresas.write("Nombre:"+nombre + "\n")
+        Empresas.write("Ubicacion:"+ubicacion + "\n")
         Empresas.write("--------------------------------------" + "\n")
         Empresas.close()
         print("\n---EMPRESA MODIFICADA CORRECTAMENTE---\n")
@@ -464,8 +514,238 @@ def modificarEmpresas_aux(cedula,nombre,ubicacion):
     else:
         print("\nEsta cedula ya está registrada, intente de nuevo")
         return gestionEmpresas()
+    
+#--------------------------------------------------------------------------------
+"""
+Nombre:
+"""
+def verTodaEmpresas(listaEmpresas, total_indices, indice):
+    if(total_indices == indice):
+        input("Estos son todas las empresas registradas.\nPresiona enter para volver a la Gestión de Empresas...")
+        return gestionEmpresas()
+    else:
+        mostrarEmpresas(listaEmpresas, indice, 0)
+        return verTodaEmpresas(listaEmpresas, total_indices, indice + 4)
+
+#--------------------------------------------------------------------------------
+"""
+Nombre: mostrarEmpresas
+Entrada: sin entrada
+Parametros: sin parametros
+Salida: El contenido del archivo
+Restricciones: sin restricciones
+"""
+def mostrarEmpresas():
+    print("\n")
+    Empresas = open("Empresas.txt", "r")
+    print(Empresas.read())
+    input("Estos son todas tus Empresas\nPresione enter para continuar")
+    print("\nDeacuerdo con las empresas mostradas anteriormente... ")
+    return ""
+#-----------
+"""
+Nombre: mostrarTransportes
+Entrada: sin entrada
+Parametros: sin parametros
+Salida: El contenido del archivo
+Restricciones: sin restricciones
+"""
+def mostrarTransportes():
+    print("\n")
+    Transportes = open("Transportes.txt", "r")
+    print(Transportes.read())
+    input("Estos son todas tus Transportes\nPresione enter para continuar")
+    print("\nDeacuerdo con los Transportes mostrados anteriormente... ")
+    return ""
 
 
 
+
+#--------------------------------------
+def verTodaEmpresas_aux(listaEmpresas, total_indices, indice):
+    if(total_indices == indice):
+        input("Estos son todas las empresas registradas.\nVisualicelas para seguir registrando su transporte")
+        return gestionTransporteEmpresa()
+    else:
+        mostrarEmpresas(listaEmpresas, indice, 0)
+        return verTodaEmpresas(listaEmpresas, total_indices, indice + 4)
+
+def verTodaEmpresas_aux1(listaEmpresas, total_indices, indice):
+    if(total_indices == indice):
+        print("\nEstos son todas las empresas registradas.\nVisualicelas para seguir registrando su transporte")
+        
+    else:
+        mostrarEmpresas(listaEmpresas, indice, 0)
+        return verTodaEmpresas(listaEmpresas, total_indices, indice + 4)
+#--------------------------------------------------------------------------------
+"""
+Nombre: gestionTransporteEmpresa
+Entrada:
+Parametros:
+Salida:
+Restricciones:
+"""
+def gestionTransporteEmpresa():
+    print("\n----------GESTION DE TRANSPORTE----------\n")
+    print("----ELIJA UNA DE LAS SIGUIENTES OPCIONES----\n")
+    print("1. Añadir un transporte")
+    print("2. Eliminar un transporte")
+    print("3. Modificar un transporte")
+    print("4. Ver todas los transportes")
+    print("5. Volver al menú administrativo")
+    eleccion = input("\nDigite una nueva opcion del menú Gestión de Transporte: ")
+    if(validar(eleccion)):
+        if(eleccion == "1"):
+            print("\n-----AÑADIR TRANSPORTE-----\n")
+            placa = input("Digite la placa del transporte: ")
+            marca = input("Digite la marca del transporte: ")
+            modelo = input("Digite el modelo del transporte: ")
+            año = input("Digite el año del transporte: ")
+            print("-----------MOSTRANDO TODAS LAS EMPRESAS-----------")
+            print(f"{(mostrarEmpresas())}")
+            empresa = input("Escriba el nombre de esa empresa: ")
+            avip = input("Digite la cantidad de asientos clase VIP que cuenta el transporte: ")
+            anormal = input("Digite la cantidad de asientos clase normales que cuenta el transporte: ")
+            aeconomica = input("Digite la cantidad de asientos clase economicos que cuenta el transporte: ")
+            return añadirTransporte(placa,marca,modelo,año,empresa,avip,anormal,aeconomica)
+        elif(eleccion == "2"):
+            placa = input("Digite el numero de matricula de la empresa a eliminar: ")
+            if placa != "":
+                return eliminarTransporte(placa)
+            else:
+                print("Debe añadir una matricula, esta opción no puede estar vacía")
+                return gestionTransporteEmpresa()
+        elif(eleccion == "3"):
+            placa=input("Digite la matricula del transporte registrado: ")
+            if placa!="":
+                return modificarTransporte(placa)
+            else:
+                print("Debe ingresar la matricula del transporte.")
+                return gestionTransporteEmpresa()
+
+            
+        else:
+            print("La opcion digitada no se encuentra. Por favor intenta otra vez")
+            return gestionTransporteEmpresa()
+            
+
+
+#------------------------------------------------------------------------------------------
+"""
+Nombre: añadirTransporte
+Entrada:
+Parametro:
+Salida:
+Restricciones:
+"""
+def añadirTransporte(placa,marca,modelo,año,empresa,avip,anormal,aeconomica):
+    Transportes=open("Transportes.txt")
+    Transportes1=Transportes.readlines()
+    validarPlaca= matValidar(placa,Transportes1)
+    if(validarPlaca):
+        Empresas=open("Transportes.txt","a")
+        Empresas.write("Placa:"+placa + "\n")
+        Empresas.write("Marca:"+marca + "\n")
+        Empresas.write("Modelo:"+modelo + "\n")
+        Empresas.write("Año:"+año + "\n")
+        Empresas.write("Empresa:"+empresa + "\n")
+        Empresas.write("VIP:"+avip + "\n")
+        Empresas.write("Normal:"+anormal + "\n")
+        Empresas.write("Economica:"+aeconomica + "\n")
+        Empresas.write("--------------------------------------" + "\n")
+        Empresas.close()
+        print("\n---NUEVO TRANSPORTE AGREGADO CORRECTAMENTE---\n")
+        return administracion()
+    else:
+        print("Esta placa ya se encuentra en el sistema, por favor, intente de nuevo.")
+        return gestionTransporteEmpresa()
+
+#--------------------------------------------------------------------------------------------
+"""
+Nombre: eliminarTransporte
+Entrada: placa
+Parametro: placa
+Salida: 
+Restricciones:
+"""
+def eliminarTransporte(placa):
+    Transportes = open("Transportes.txt")
+    listaTransportes = Transportes.readlines()
+    if(seEncuentra("Placa:"+placa+"\n",listaTransportes)):
+        print("-----------BORRANDO TRANSPORTE-----------\n")
+        placa=str(placa)
+        indice = listaTransportes.index("Placa:"+placa+"\n")
+        placa = eliminarInformacion_aux(listaTransportes,indice,0)
+        Transportes.close()
+        Transportes = open("Transportes.txt", "w")
+        Transportes.write(placa)
+        Transportes.close()
+        print("\n------TRANSPORTE BORRADO EXITOSAMENTE------")
+        return gestionTransporteEmpresa()
+    else:
+        print("\nNo hay ningun transporte registrada con la placa: ", placa)
+        Transportes.close()
+        return gestionTransporteEmpresa()
+
+#----------------------------------------------------------------------------------------------
+"""
+Nombre: modificarTransporte
+Entrada: 
+Parametros:
+Salida:
+Restricciones:
+"""
+def modificarTransporte(placa):
+    Transportes = open("Transportes.txt")
+    listaTransportes = Transportes.readlines()
+    if(seEncuentra("Placa:"+placa+"\n",listaTransportes)):
+        print("-----------ESTE TRANSPORTE SE MODIFICARÁ-----------\n")
+        placa=str(placa)
+        indice = listaTransportes.index("Placa:"+placa+"\n")
+        placa = eliminarInformacion_aux(listaTransportes,indice,0)
+        Transportes.close()
+        Transportes = open("Transportes.txt", "w")
+        Transportes.write(placa)
+        Transportes.close()
+        placa = input("Digite la nueva placa del transporte: ")
+        marca = input("Digite la nueva marca del transporte: ")
+        modelo = input("Digite el nuevo modelo del transporte: ")
+        año = input("Digite el nuevo año del transporte: ")
+        print("-----------MOSTRANDO TODOS LOS TRANSPORTES-----------")
+        print(f"{(mostrarTransportes())}")
+        empresa = input("Escriba el nuevo nombre de esa empresa: ")
+        avip = input("Digite la cantidad de asientos clase VIP que cuenta el transporte: ")
+        anormal = input("Digite la cantidad de asientos clase normales que cuenta el transporte: ")
+        aeconomica = input("Digite la cantidad de asientos clase economicos que cuenta el transporte: ")
+        return modificarTransporte_aux(placa,marca,modelo,año,empresa,avip,anormal,aeconomica)        
+
+def modificarTransporte_aux(placa,marca,modelo,año,empresa,avip,anormal,aeconomica):
+    Transportes=open("Transportes.txt")
+    Transportes1=Transportes.readlines()
+    validarPlaca= matValidar(placa,Transportes1)
+    if(validarPlaca):
+        Empresas=open("Transportes.txt","a")
+        Empresas.write("Placa:"+placa + "\n")
+        Empresas.write("Marca:"+marca + "\n")
+        Empresas.write("Modelo:"+modelo + "\n")
+        Empresas.write("Año:"+año + "\n")
+        Empresas.write("Empresa:"+empresa + "\n")
+        Empresas.write("VIP:"+avip + "\n")
+        Empresas.write("Normal:"+anormal + "\n")
+        Empresas.write("Economica:"+aeconomica + "\n")
+        Empresas.write("--------------------------------------" + "\n")
+        Empresas.close()
+        print("\n---NUEVO TRANSPORTE MODIFICADO CORRECTAMENTE---\n")
+        return gestionTransporteEmpresa()
+    else:
+        print("Esta placa ya se encuentra en el sistema, por favor, intente de nuevo.")
+        return gestionTransporteEmpresa()
+    
+
+
+#-----------------------------------------------------------------------------------------------------------------
+
+
+    
 sistemaDeReservacion()
 
