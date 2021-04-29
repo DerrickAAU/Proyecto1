@@ -269,10 +269,10 @@ def sistemaDeReservacion():
         return sistemaDeReservación()
 #-------------------------------------------------------------------------
 """
-Nombre: comprobarAcceso
-Entrada: Usuario y Contraseña
+Nombre: comprobarClave
+Entrada: sin entrada
 Parametros: no posee
-Salida: Si el usuario y contraseña esta en el sistema, permite el acceso, de lo contrario lo denegará y permitirá registrarse
+Salida: es un validador de clave
 Restricciones: no posee
 """
 def comprobarClave():
@@ -311,19 +311,15 @@ def comprobarAcceso():
 
 
 def comprobarAcceso_aux(clave):
-    Clave1 = comprobarClave()
-    validarClave = validarC(clave, Clave1)
-    if(validarClave):
+    Clave = open("Clave.txt")
+    Clave1 = Clave.readlines()
+    if(seEncuentra("clave:"+clave,Clave1)):
+        Clave.close()
         return administracion()
     else:
-        return False
-
-def validarC(clave, Clave1):
-    if(seEncuentra(clave,Clave1)):
-        return "Clave correcta"
-    else:
-        print("CLAVE INCORRECTA, por favor intentar de nuevo")
-        return comprobarAcceso()    
+        print("CLAVE INCORRECTA, POR FAVOR INETNTE DE NUEVO")
+        return sistemaDeReservacion()
+    
 
 #-----------------------------------------------------------------------
 """
@@ -402,10 +398,7 @@ def gestionEmpresas():
             if cedula!="":
                 return modificarEmpresas(cedula)
         elif(eleccion == "4"):
-            print("-----------MOSTRANDO TODAS LAS EMPRESAS-----------")
-            listaEmpresas = obtenerListaEmpresas()
-            total_indices = cantidadDeindices(listaEmpresas)
-            return verTodaEmpresas(listaEmpresas, total_indices, 0)
+            return mostrarEmpresas()
         elif(eleccion == "5"):
             print("\n-----Volviendo al menú administrativo-----\n")
             return administracion()
@@ -517,18 +510,6 @@ def modificarEmpresas_aux(cedula,nombre,ubicacion):
     
 #--------------------------------------------------------------------------------
 """
-Nombre:
-"""
-def verTodaEmpresas(listaEmpresas, total_indices, indice):
-    if(total_indices == indice):
-        input("Estos son todas las empresas registradas.\nPresiona enter para volver a la Gestión de Empresas...")
-        return gestionEmpresas()
-    else:
-        mostrarEmpresas(listaEmpresas, indice, 0)
-        return verTodaEmpresas(listaEmpresas, total_indices, indice + 4)
-
-#--------------------------------------------------------------------------------
-"""
 Nombre: mostrarEmpresas
 Entrada: sin entrada
 Parametros: sin parametros
@@ -539,9 +520,8 @@ def mostrarEmpresas():
     print("\n")
     Empresas = open("Empresas.txt", "r")
     print(Empresas.read())
-    input("Estos son todas tus Empresas\nPresione enter para continuar")
-    print("\nDeacuerdo con las empresas mostradas anteriormente... ")
-    return ""
+    print("Estos son todas tus Empresas.\n")
+    return gestionEmpresas()
 #-----------
 """
 Nombre: mostrarTransportes
@@ -554,29 +534,11 @@ def mostrarTransportes():
     print("\n")
     Transportes = open("Transportes.txt", "r")
     print(Transportes.read())
-    input("Estos son todas tus Transportes\nPresione enter para continuar")
-    print("\nDeacuerdo con los Transportes mostrados anteriormente... ")
-    return ""
+    print("\nEstos son todas tus Transportes.\n")
+    return gestionTransporteEmpresa()
 
 
 
-
-#--------------------------------------
-def verTodaEmpresas_aux(listaEmpresas, total_indices, indice):
-    if(total_indices == indice):
-        input("Estos son todas las empresas registradas.\nVisualicelas para seguir registrando su transporte")
-        return gestionTransporteEmpresa()
-    else:
-        mostrarEmpresas(listaEmpresas, indice, 0)
-        return verTodaEmpresas(listaEmpresas, total_indices, indice + 4)
-
-def verTodaEmpresas_aux1(listaEmpresas, total_indices, indice):
-    if(total_indices == indice):
-        print("\nEstos son todas las empresas registradas.\nVisualicelas para seguir registrando su transporte")
-        
-    else:
-        mostrarEmpresas(listaEmpresas, indice, 0)
-        return verTodaEmpresas(listaEmpresas, total_indices, indice + 4)
 #--------------------------------------------------------------------------------
 """
 Nombre: gestionTransporteEmpresa
@@ -609,21 +571,23 @@ def gestionTransporteEmpresa():
             aeconomica = input("Digite la cantidad de asientos clase economicos que cuenta el transporte: ")
             return añadirTransporte(placa,marca,modelo,año,empresa,avip,anormal,aeconomica)
         elif(eleccion == "2"):
-            placa = input("Digite el numero de matricula de la empresa a eliminar: ")
+            placa = input("\nDigite el numero de matricula de la empresa a eliminar: ")
             if placa != "":
                 return eliminarTransporte(placa)
             else:
-                print("Debe añadir una matricula, esta opción no puede estar vacía")
+                print("\nDebe añadir una matricula, esta opción no puede estar vacía")
                 return gestionTransporteEmpresa()
         elif(eleccion == "3"):
-            placa=input("Digite la matricula del transporte registrado: ")
+            placa=input("\nDigite la matricula del transporte registrado: ")
             if placa!="":
                 return modificarTransporte(placa)
             else:
                 print("Debe ingresar la matricula del transporte.")
                 return gestionTransporteEmpresa()
+        elif(eleccion == "4"):
+            return mostrarTransportes()
+    
 
-            
         else:
             print("La opcion digitada no se encuentra. Por favor intenta otra vez")
             return gestionTransporteEmpresa()
@@ -741,9 +705,43 @@ def modificarTransporte_aux(placa,marca,modelo,año,empresa,avip,anormal,aeconom
         print("Esta placa ya se encuentra en el sistema, por favor, intente de nuevo.")
         return gestionTransporteEmpresa()
     
-
-
 #-----------------------------------------------------------------------------------------------------------------
+"""
+Nombre:
+Entrada:
+Parametros:
+Salida:
+Restricciones:
+"""
+def gestionViajes():
+    print("\n----------GESTION DE VIAJES----------\n")
+    print("----ELIJA UNA DE LAS SIGUIENTES OPCIONES----\n")
+    print("1. Añadir un viaje")
+    print("2. Eliminar un viaje")
+    print("3. Modificar un viaje")
+    print("4. Ver todas los viajes")
+    print("5. Volver al menú administrativo")
+    eleccion = input("\nDigite una nueva opcion del menú Gestión de Transporte: ")
+    if(validar(eleccion)):
+        if(eleccion == "1"):
+            print("\n-----AÑADIR TRANSPORTE-----\n")
+            nViaje = input("Digite el numero de viaje")
+            ciudadI = input("")
+            fechaS = input("")
+            horaS = input("")
+            ciudadV = input("")
+            fechaV = input("")
+            horaV = input("")
+            empresa = input("")
+            transporte = input("")
+            avip = input("")
+            anormal = input("")
+            aeconomico = input("")
+            return añadirViaje(nviaje,cuidadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transporte,avip,anormal,aeconomico)
+        elif(eleccion == "2"):
+
+
+
 
 
     
