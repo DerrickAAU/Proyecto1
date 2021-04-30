@@ -106,7 +106,7 @@ def eliminarInformacion(listaEmpresas, indice, cont):
         return eliminarInformacion(listaEmpresas, indice, cont + 1)
     
 #----------------------------------------------------------------------------
-#Para el transporte
+#Para eliminar el transporte
 def eliminarInformacion_aux(listaTransportes, indice, cont):
     if cont==9:
         return convertirstr(listaTransportes)
@@ -115,6 +115,18 @@ def eliminarInformacion_aux(listaTransportes, indice, cont):
         listaTransportes.pop(indice)
         return eliminarInformacion_aux(listaTransportes, indice, cont + 1)
 
+#--------------------------------------------------------------------------------
+#Para eliminar los viajes
+def eliminarInformacion_aux1(listaViajes,indice,cont):
+    if cont==13:
+        return convertirstr(listaViajes)
+    else:
+        print(listaViajes[indice].strip())
+        listaViajes.pop(indice)
+        return eliminarInformacion_aux1(listaViajes, indice, cont + 1)
+
+
+    
 #--------------------------------------------------------------------------------
 """
 Nombre: mostrarEmpresas
@@ -474,7 +486,7 @@ def modificarEmpresas(cedula):
     Empresas = open("Empresas.txt")
     listaEmpresas = Empresas.readlines()
     if(seEncuentra(cedula+"\n",listaEmpresas)):
-        print("\n---SE MODIFICARÁ ESTA EMPRESA---")
+        print("\n---SE MODIFICARÁ ESTA EMPRESA---\n")
         cedula=str(cedula)
         indice = listaEmpresas.index("Cedula:"+cedula+"\n")
         cedula = eliminarInformacion(listaEmpresas, indice, 0)
@@ -516,13 +528,22 @@ Parametros: sin parametros
 Salida: El contenido del archivo
 Restricciones: sin restricciones
 """
+#Para mostrar al usuario las empresas
 def mostrarEmpresas():
     print("\n")
     Empresas = open("Empresas.txt", "r")
     print(Empresas.read())
     print("Estos son todas tus Empresas.\n")
     return gestionEmpresas()
-#-----------
+
+#Para mostar en modificar o añadir
+def mostrarEmpresas_aux():
+    print("\n")
+    Empresas = open("Empresas.txt", "r")
+    print(Empresas.read())
+    print("Estos son todas tus Empresas.\n")
+    return ""
+#----------------------------------------------------------------------------
 """
 Nombre: mostrarTransportes
 Entrada: sin entrada
@@ -530,6 +551,7 @@ Parametros: sin parametros
 Salida: El contenido del archivo
 Restricciones: sin restricciones
 """
+#Para mostrar al usuario los transportes
 def mostrarTransportes():
     print("\n")
     Transportes = open("Transportes.txt", "r")
@@ -537,7 +559,20 @@ def mostrarTransportes():
     print("\nEstos son todas tus Transportes.\n")
     return gestionTransporteEmpresa()
 
-
+#Para mostrar al añadir o modificar
+def mostrarTransportes_aux():
+    print("\n")
+    Transportes = open("Transportes.txt", "r")
+    print(Transportes.read())
+    print("\nEstos son todas tus Transportes.\n")
+    return ""
+#-------------------------------------------------------------------------------
+def mostrarViajes():
+    print("\n")
+    Viajes = open("Viajes.txt", "r")
+    print(Viajes.read())
+    print("\nEstos son todos tus Viajes registrados.\n")
+    return gestionViaje()
 
 #--------------------------------------------------------------------------------
 """
@@ -564,7 +599,7 @@ def gestionTransporteEmpresa():
             modelo = input("Digite el modelo del transporte: ")
             año = input("Digite el año del transporte: ")
             print("-----------MOSTRANDO TODAS LAS EMPRESAS-----------")
-            print(f"{(mostrarEmpresas())}")
+            print(mostrarEmpresas_aux())
             empresa = input("Escriba el nombre de esa empresa: ")
             avip = input("Digite la cantidad de asientos clase VIP que cuenta el transporte: ")
             anormal = input("Digite la cantidad de asientos clase normales que cuenta el transporte: ")
@@ -586,7 +621,9 @@ def gestionTransporteEmpresa():
                 return gestionTransporteEmpresa()
         elif(eleccion == "4"):
             return mostrarTransportes()
-    
+        elif(eleccion == "5"):
+            print("\n-----Volviendo al menú Administrativo-----\n")
+            return administracion()
 
         else:
             print("La opcion digitada no se encuentra. Por favor intenta otra vez")
@@ -607,21 +644,21 @@ def añadirTransporte(placa,marca,modelo,año,empresa,avip,anormal,aeconomica):
     Transportes1=Transportes.readlines()
     validarPlaca= matValidar(placa,Transportes1)
     if(validarPlaca):
-        Empresas=open("Transportes.txt","a")
-        Empresas.write("Placa:"+placa + "\n")
-        Empresas.write("Marca:"+marca + "\n")
-        Empresas.write("Modelo:"+modelo + "\n")
-        Empresas.write("Año:"+año + "\n")
-        Empresas.write("Empresa:"+empresa + "\n")
-        Empresas.write("VIP:"+avip + "\n")
-        Empresas.write("Normal:"+anormal + "\n")
-        Empresas.write("Economica:"+aeconomica + "\n")
-        Empresas.write("--------------------------------------" + "\n")
-        Empresas.close()
+        Transportes=open("Transportes.txt","a")
+        Transportes.write("Placa:"+placa + "\n")
+        Transportes.write("Marca:"+marca + "\n")
+        Transportes.write("Modelo:"+modelo + "\n")
+        Transportes.write("Año:"+año + "\n")
+        Transportes.write("Empresa:"+empresa + "\n")
+        Transportes.write("VIP:"+avip + "\n")
+        Transportes.write("Normal:"+anormal + "\n")
+        Transportes.write("Economica:"+aeconomica + "\n")
+        Transportes.write("--------------------------------------" + "\n")
+        Transportes.close()
         print("\n---NUEVO TRANSPORTE AGREGADO CORRECTAMENTE---\n")
-        return administracion()
+        return gestionTransporteEmpresa()
     else:
-        print("Esta placa ya se encuentra en el sistema, por favor, intente de nuevo.")
+        print("\nEsta placa ya se encuentra en el sistema, por favor, intente de nuevo.")
         return gestionTransporteEmpresa()
 
 #--------------------------------------------------------------------------------------------
@@ -676,7 +713,7 @@ def modificarTransporte(placa):
         modelo = input("Digite el nuevo modelo del transporte: ")
         año = input("Digite el nuevo año del transporte: ")
         print("-----------MOSTRANDO TODOS LOS TRANSPORTES-----------")
-        print(f"{(mostrarTransportes())}")
+        print(mostrarTransportes_aux())
         empresa = input("Escriba el nuevo nombre de esa empresa: ")
         avip = input("Digite la cantidad de asientos clase VIP que cuenta el transporte: ")
         anormal = input("Digite la cantidad de asientos clase normales que cuenta el transporte: ")
@@ -688,17 +725,17 @@ def modificarTransporte_aux(placa,marca,modelo,año,empresa,avip,anormal,aeconom
     Transportes1=Transportes.readlines()
     validarPlaca= matValidar(placa,Transportes1)
     if(validarPlaca):
-        Empresas=open("Transportes.txt","a")
-        Empresas.write("Placa:"+placa + "\n")
-        Empresas.write("Marca:"+marca + "\n")
-        Empresas.write("Modelo:"+modelo + "\n")
-        Empresas.write("Año:"+año + "\n")
-        Empresas.write("Empresa:"+empresa + "\n")
-        Empresas.write("VIP:"+avip + "\n")
-        Empresas.write("Normal:"+anormal + "\n")
-        Empresas.write("Economica:"+aeconomica + "\n")
-        Empresas.write("--------------------------------------" + "\n")
-        Empresas.close()
+        Transportes=open("Transportes.txt","a")
+        Transportes.write("Placa:"+placa + "\n")
+        Transportes.write("Marca:"+marca + "\n")
+        Transportes.write("Modelo:"+modelo + "\n")
+        Transportes.write("Año:"+año + "\n")
+        Transportes.write("Empresa:"+empresa + "\n")
+        Transportes.write("VIP:"+avip + "\n")
+        Transportes.write("Normal:"+anormal + "\n")
+        Transportes.write("Economica:"+aeconomica + "\n")
+        Transportes.write("--------------------------------------" + "\n")
+        Transportes.close()
         print("\n---NUEVO TRANSPORTE MODIFICADO CORRECTAMENTE---\n")
         return gestionTransporteEmpresa()
     else:
@@ -713,7 +750,7 @@ Parametros:
 Salida:
 Restricciones:
 """
-def gestionViajes():
+def gestionViaje():
     print("\n----------GESTION DE VIAJES----------\n")
     print("----ELIJA UNA DE LAS SIGUIENTES OPCIONES----\n")
     print("1. Añadir un viaje")
@@ -721,29 +758,164 @@ def gestionViajes():
     print("3. Modificar un viaje")
     print("4. Ver todas los viajes")
     print("5. Volver al menú administrativo")
-    eleccion = input("\nDigite una nueva opcion del menú Gestión de Transporte: ")
+    eleccion = input("\nDigite una nueva opcion del menú Gestión de Viajes: ")
     if(validar(eleccion)):
         if(eleccion == "1"):
-            print("\n-----AÑADIR TRANSPORTE-----\n")
-            nViaje = input("Digite el numero de viaje")
-            ciudadI = input("")
-            fechaS = input("")
-            horaS = input("")
-            ciudadV = input("")
-            fechaV = input("")
-            horaV = input("")
-            empresa = input("")
-            transporte = input("")
-            avip = input("")
-            anormal = input("")
-            aeconomico = input("")
-            return añadirViaje(nviaje,cuidadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transporte,avip,anormal,aeconomico)
+            print("\n-------AÑADIR VIAJE-------\n")
+            numv = input("Digite el numero de viaje: ")
+            ciudadI = input("Digite la ciudad de salida: ")
+            fechaS = input("Digite la fecha de salida: ")
+            horaS = input("Digite la hora de salida: ")
+            ciudadV = input("Digite la ciudad de llegada: ")
+            fechaV = input("Digite la fecha de llegada: ")
+            horaV = input("Digite la hora de llegada: ")
+            print(mostrarEmpresas_aux())
+            empresa = input("Digite el nombre de una empresa existente: ")
+            print(mostrarTransportes_aux())
+            transporte = input("Digite la placa de un transporte existente: ")
+            avip = input("Digite el monto de asientos clase VIP que cuenta el transporte: ")
+            anormal = input("Digite el monto de asientos clase normales que cuenta el transporte: ")
+            aeconomico = input("Digite el monto de asientos clase economicos que cuenta el transporte: ")
+            return añadirViaje(numv,ciudadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transporte,avip,anormal,aeconomico)
         elif(eleccion == "2"):
+            numv = input("\nDigite el numero del viaje que desea borrar: ")
+            if numv!="":
+                return borrarViaje(numv)
+            else:
+                print("\nError: Este espacio no puede esta vacio.\nDebe ingresar el numero de viaje\nVuelva intentarlo.")
+                return gestionViaje()
+        elif(eleccion == "3"):
+            numv=input("\nDigite el numero de viaje registrado a modificar: ")
+            if numv!="":
+                return modificarViaje(numv)
+            else:
+                print("Error: Este espacio no puede ser vacío.\nDebedigitar el numero de viaje.\nVuelva intentarlo.")
+        elif(eleccion == "4"):
+            print(mostrarViajes())
+            return gestionViaje()
+        elif(eleccion == "5"):
+            print("\n-----Volviendo al menú Administrativo-----\n")
+            return administracion()
+        else:
+            print("La opcion digitada no se encuentra. Por favor intenta otra vez")
+            return gestionViajes()
 
+#----------------------------------------------------------------------------------------------------------------------------------
+"""
+Nombre: añadirViaje
+Entrada:
+Parametro:
+Salida:
+Restricciones:
+"""
+def añadirViaje(numv,ciudadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transporte,avip,anormal,aeconomico):
+    Viajes = open("Viajes.txt")
+    Viajes=open("Viajes.txt","a")
+    Viajes.write("Numero:"+numv +"\n")
+    Viajes.write("Cuidad de salida:"+ciudadI + "\n")
+    Viajes.write("Fecha de salida:"+fechaS + "\n")
+    Viajes.write("Hora de salida:"+horaS + "\n")
+    Viajes.write("Ciudad de llegada:"+ciudadV + "\n")
+    Viajes.write("Fecha de llegada:"+fechaV + "\n")
+    Viajes.write("Hora de llegada:"+horaV + "\n")
+    Viajes.write("Empresa:"+empresa + "\n")
+    Viajes.write("Transporte:"+transporte + "\n")
+    Viajes.write("VIP:"+avip + "\n")
+    Viajes.write("Normal:"+anormal + "\n")
+    Viajes.write("Economico:"+aeconomico + "\n")
+    Viajes.write("--------------------------------------" + "\n")
+    Viajes.close()
+    print("\n---NUEVO VIAJE AÑADIDO CORRECTAMENTE---\n")
+    return gestionViaje()
 
+#---------------------------------------------------------------------------------------------------------------------------------
+"""
+Nombre: borrarViaje
+Entrada:
+Parametro:
+Salida:
+Restricciones:
+"""
+def borrarViaje(numv):
+    Viajes = open("Viajes.txt")
+    listaViajes = Viajes.readlines()
+    if(seEncuentra("Numero:"+numv+"\n",listaViajes)):
+        print("-----------BORRANDO VIAJE-----------\n")
+        numv=str(numv)
+        indice = listaViajes.index("Numero:"+numv+"\n")
+        numv = eliminarInformacion_aux1(listaViajes,indice,0)
+        Viajes.close()
+        Viajes = open("Viajes.txt", "w")
+        Viajes.write(numv)
+        Viajes.close()
+        print("\n------VIAJE BORRADO EXITOSAMENTE------")
+        return gestionViaje()
+    else:
+        print("\nNo hay ningun viaje registrada con el numero: ", numv)
+        Viajes.close()
+        return gestionViaje()
 
+#------------------------------------------------------------------------------------------------------------------
+"""
+Nombre: modificarViaje
+Entrada:
+Parametro:
+Salida:
+Restricciones:
+"""
+def modificarViaje(numv):
+    Viajes = open("Viajes.txt")
+    listaViajes = Viajes.readlines()
+    if(seEncuentra("Numero:"+numv+"\n",listaViajes)):
+        print("-----------MODIFICANDO VIAJE-----------\n")
+        numv=str(numv)
+        indice = listaViajes.index("Numero:"+numv+"\n")
+        numv = eliminarInformacion_aux1(listaViajes,indice,0)
+        Viajes.close()
+        Viajes = open("Viajes.txt", "w")
+        Viajes.write(numv)
+        Viajes.close()
+        numv = input("Digite el nuevo numero de viaje: ")
+        ciudadI = input("Digite la nueva ciudad de salida: ")
+        fechaS = input("Digite la nueva fecha de salida: ")
+        horaS = input("Digite la nuevahora de salida: ")
+        ciudadV = input("Digite la nueva ciudad de llegada: ")
+        fechaV = input("Digite la nueva fecha de llegada: ")
+        horaV = input("Digite la nueva hora de llegada: ")
+        print(mostrarEmpresas_aux())
+        empresa = input("Digite el nuevo nombre de una empresa existente: ")
+        print(mostrarTransportes_aux())
+        transporte = input("Digite la nueva placa de un transporte existente: ")
+        avip = input("Digite el nuevo monto de asientos clase VIP que cuenta el transporte: ")
+        anormal = input("Digite el nuevo monto de asientos clase normales que cuenta el transporte: ")
+        aeconomico = input("Digite el nuevo monto de asientos clase economicos que cuenta el transporte: ")
+        return modificarViaje_aux(numv,ciudadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transporte,avip,anormal,aeconomico)
 
-
+def modificarViaje_aux(numv,ciudadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transporte,avip,anormal,aeconomico):
+    Viajes = open("Viajes.txt")
+    Viajes=open("Viajes.txt","a")
+    Viajes.write("Numero:"+numv +"\n")
+    Viajes.write("Cuidad de salida:"+ciudadI + "\n")
+    Viajes.write("Fecha de salida:"+fechaS + "\n")
+    Viajes.write("Hora de salida:"+horaS + "\n")
+    Viajes.write("Ciudad de llegada:"+ciudadV + "\n")
+    Viajes.write("Fecha de llegada:"+fechaV + "\n")
+    Viajes.write("Hora de llegada:"+horaV + "\n")
+    Viajes.write("Empresa:"+empresa + "\n")
+    Viajes.write("Transporte:"+transporte + "\n")
+    Viajes.write("VIP:"+avip + "\n")
+    Viajes.write("Normal:"+anormal + "\n")
+    Viajes.write("Economico:"+aeconomico + "\n")
+    Viajes.write("--------------------------------------" + "\n")
+    Viajes.close()
+    print("\n---NUEVO VIAJE MODIFICADO CORRECTAMENTE---\n")
+    return gestionViaje()        
     
+    
+
+
+
+
+##########################################################################################################################################################################
 sistemaDeReservacion()
 
