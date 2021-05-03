@@ -619,7 +619,7 @@ def gestionTransporteEmpresa():
             aeconomica = input("Digite la cantidad de asientos clase economicos que cuenta el transporte: ")
             return añadirTransporte(placa,marca,modelo,año,empresa,avip,anormal,aeconomica)
         elif(eleccion == "2"):
-            placa = input("\nDigite el numero de matricula de la empresa a eliminar: ")
+            placa = input("\nDigite el numero de matricula del transporte a eliminar: ")
             if placa != "":
                 return eliminarTransporte(placa)
             else:
@@ -630,8 +630,9 @@ def gestionTransporteEmpresa():
             if placa!="":
                 return modificarTransporte(placa)
             else:
-                print("Debe ingresar la matricula del transporte.")
+                print("\nERROR: Este espacio no puede esatr vacío.\nPorfavor debe digitar la matricula.\nVuela intentarlo.\n")
                 return gestionTransporteEmpresa()
+
         elif(eleccion == "4"):
             return mostrarTransportes()
         elif(eleccion == "5"):
@@ -729,7 +730,7 @@ def modificarTransporte(placa):
         modelo = input("Digite el nuevo modelo del transporte: ")
         año = input("Digite el nuevo año del transporte: ")
         print("-----------MOSTRANDO TODOS LOS TRANSPORTES-----------")
-        print(mostrarTransportes_aux())
+        print(mostrarEmpresas_aux())
         empresa = input("Escriba el nuevo nombre de esa empresa: ")
         avip = input("Digite la cantidad de asientos clase VIP que cuenta el transporte: ")
         anormal = input("Digite la cantidad de asientos clase normales que cuenta el transporte: ")
