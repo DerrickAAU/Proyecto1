@@ -1,13 +1,14 @@
-"""
-Proyecto
-"""
+######################################################################
+##P R O Y E C T O  D E  T A L L E R  A  L A  P R O G R A M A C I Ó N##
+######################################################################
 
-"""
-Nombre: Convertir la lista en string
-Entrada: lista
+#Primeramente agregaremos unas validaciones al codigo. 
+"""  
+Nombre: convertirstr 
+Entrada: una lista
 Parametros: lista
 Salida: un string
-Restricciones: La entrada debe ser una lista
+Restricciones: La entrada debe ser una lista.
 """
 def convertirstr(lista):
     if isinstance(lista, list):
@@ -16,12 +17,12 @@ def convertirstr(lista):
             string += indice
         return string
     else:
-        print("Error: no se puede convertir a String, porque, el tipo de dato de entrada, no es una lista")
+        print("Error: No se puede convertir a String, el tipo de dato de entrada, no es una lista")
         
 #----------------------------------------------------------
-        
+#Cantidad de indice que contiene
 """
-Nombre: Cantidad de indices
+Nombre: CantidadDeindices
 Entrada: sin estrada
 Parametros: convertirstr
 Salida: sin salida
@@ -34,9 +35,8 @@ def cantidadDeindices(convertirstr):
         return 1+ cantidadDeindices(convertirstr[1:])
 
 
-
 #----------------------------------------------------------
-    
+#Para ver si se encuentra en un archivo
 """
 Nombre: seEncuentra
 Entrada: lo que se va buscar y los dattos en str
@@ -69,9 +69,11 @@ def seEncuentraEnstring(buscar,cadena,indicesBuscar):
             return True
         else:
             return seEncuentraEnstring(buscar,cadena[1:], indicesBuscar)
-
+        
+#-------------------------------------------------------------------------------------------------
+#Validar si la cadena es del tipo numerica
 """
-Nombre: Es númerico
+Nombre: esNumerico
 Entrada: una cadena
 Parametros: cadena
 Salida: True o False
@@ -89,7 +91,8 @@ def esNumerico(cadena):
         else:
             return False
         
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------
+#Esta funcion elimina la informacion del archivo Empresas
 """
 Nombre: eliminarInformacion
 Entrada: una lista a eliminar
@@ -105,8 +108,8 @@ def eliminarInformacion(listaEmpresas, indice, cont):
         listaEmpresas.pop(indice)
         return eliminarInformacion(listaEmpresas, indice, cont + 1)
     
-#----------------------------------------------------------------------------
-#Para eliminar el transporte
+#-----------------------------------------------------
+#Para eliminar la informacion en el archivo transporte
 def eliminarInformacion_aux(listaTransportes, indice, cont):
     if cont==9:
         return convertirstr(listaTransportes)
@@ -115,8 +118,8 @@ def eliminarInformacion_aux(listaTransportes, indice, cont):
         listaTransportes.pop(indice)
         return eliminarInformacion_aux(listaTransportes, indice, cont + 1)
 
-#--------------------------------------------------------------------------------
-#Para eliminar los viajes
+#-----------------------------------------------------
+#Para eliminar la información de los viajes
 def eliminarInformacion_aux1(listaViajes,indice,cont):
     if cont==13:
         return convertirstr(listaViajes)
@@ -125,9 +128,8 @@ def eliminarInformacion_aux1(listaViajes,indice,cont):
         listaViajes.pop(indice)
         return eliminarInformacion_aux1(listaViajes, indice, cont + 1)
 
-
-    
 #--------------------------------------------------------------------------------
+#Imprime en pantalla las empresas que se encuntran en el archivo Empresas
 """
 Nombre: mostrarEmpresas
 Entrada: datos a mostrar
@@ -149,8 +151,8 @@ def mostrarEmpresas(listaEmpresas, indice, cont):
             print(listaEmpresas[indice][0:-1])
             return mostrarEmpresas(listaEmpresas, indice + 1, cont + 1)
 
-
 #---------------------------------------------------------------------------------
+#Convierte datos de la lista en string
 """
 Nombre: convertir_a_string
 Entrada: una lista
@@ -168,7 +170,8 @@ def convertir_a_string(lista):
         print("Error: no se puede convertir a String, porque, el tipo de dato de entrada, no es una lista")
 
 
-#---------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+#Con esta funcion podemos asegurarnos que la cedula ingresada contenga la cantidad requerida de numeros ingresados
 """
 Nombre: cedValidar
 Entrada: cedula a validar
@@ -186,7 +189,8 @@ def cedValidar( cedula,Empresas):
             print("\nERROR: La cédula no contiene 10 dígitos exactos, vuelva intentar")
             return gestionEmpresas()
 
-#-------------------------------------------------------------------------------------
+#---------------------------------------------------
+#Con esta funcion podemos asegurarnos que la placa ingresada contenga la cantidad requerida de numeros ingresados
 def matValidar(placa,Transportes):
     if(seEncuentra(placa + "\n", Transportes)):
         return False
@@ -196,7 +200,8 @@ def matValidar(placa,Transportes):
         else:
             print("\nERROR: La placa no contiene 6 dígitos exactos, vuelva intentar")
             return gestionTransporteEmpresa()
-#-------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------
+#Validar que el usuario indique algo str
 """
 *******************************************
 *COMPROBAR SI LA OPCIÓN DIGITADA ES VÁLIDA*
@@ -213,14 +218,13 @@ def validar(opcion):
     else:
         return False
 #-------------------------------------------------------------
+#Parte del manejo de archivos, para obtener la lista en este caso de la empresa
 """
 Nombre: obtenerListaContactos
 Entradas: no posee
-Salidas: una lista que contiene todas las líneas del archivo contactos.txt
+Salidas: una lista que contiene todas las líneas del archivo Empresas.txt
 Restricciones: no posee
 """
-
-
 def obtenerListaEmpresas():
     Empresas = open("Empresas.txt")
     listaEmpresas = Empresas.readlines()
@@ -228,27 +232,28 @@ def obtenerListaEmpresas():
     return listaEmpresas
 
 #-------------------------------------------------------------
+#Esta funcion es para obtener a lista del transporte, en este caso del archivo Transportes.txt
 def obtenerListaTransportes():
     Transportes = open("Transportes.txt")
     listaTransportes = Transportes.readlines()
     Transportes.close()
     return listaTransportes
 #-------------------------------------------------------------
-
-print("Bienvenida/o a al sistema de reservacion de boletos. \n")
+#Esta es la parte del menú principal
 
 """
-****************
-*MENÚ PRINCIPAL*
-****************
+********************
+***MENÚ PRINCIPAL***
+********************
 Nombre: sistemaDeReservación
 Entradas: no posee.
 Parametros: no posee
-Salidas: menú principal de la agenda de contactos.
-Restricciones: no posee.
+Salidas: Submenú dependiendo la opcion que elija el ususario
+Restricciones: La opcion debe estar en las opciones que se muestran
 """
 
 def sistemaDeReservacion():
+    print("\nBienvenida/o a al sistema de reservacion de boletos. \n")
     print("І-------------------------MENÚ PRINCIPAL-------------------------І\n")
     print("Debes elegir una de las siguientes opciones, mediante el numero: ")
     print("1. Opciones Administrativas.")
@@ -275,11 +280,12 @@ def sistemaDeReservacion():
             input()
         else:
             print("La opcion digitada no es correcta, favor ingresar el numero de la opcion a elegir.")
-            return sistemaDeReservación()
+            return sistemaDeReservacion()
     else:
         print("La opción que digitaste no es válida. Por favor inteta otra vez.")
         return sistemaDeReservación()
 #-------------------------------------------------------------------------
+#Comprobar que la clave que ingrese el ususario sea correcta
 """
 Nombre: comprobarClave
 Entrada: sin entrada
@@ -325,15 +331,16 @@ def comprobarAcceso():
 def comprobarAcceso_aux(clave):
     Clave = open("Clave.txt")
     Clave1 = Clave.readlines()
-    if(seEncuentra("clave:"+clave,Clave1)):
+    if(seEncuentra(clave,Clave1)):
         Clave.close()
         return administracion()
     else:
-        print("CLAVE INCORRECTA, POR FAVOR INETNTE DE NUEVO")
-        return sistemaDeReservacion()
+        print("CLAVE INCORRECTA, POR FAVOR INTENTE DE NUEVO")
+        return comprobarAcceso()
     
 
 #-----------------------------------------------------------------------
+#Esta parte es la del menú administrativo
 """
 Nombre: administracion
 Entrada: no posee
@@ -375,9 +382,10 @@ def administracion():
         return sistemaDeReserva()
         
 #-------------------------------------------------------------------------------------
+#Este es el menú de gestión de empresas
 """
 Nombre: gestionEmpresas
-Entrada: no posee
+Entrada: es un menú
 Parametros: no posee
 Salida: opciones distintas a eligir
 Restricciones: no posee
@@ -406,7 +414,7 @@ def gestionEmpresas():
                 print("Debe añadir una cédula, esta opción no puede estar vacía")
                 return gestionEmpresas()
         elif(eleccion == "3"):
-            cedula=input("Digite el numero de cedula de la Empresa ingresada: ")
+            cedula=input("Digite el numero de cédula de la Empresa ingresada: ")
             if cedula!="":
                 return modificarEmpresas(cedula)
         elif(eleccion == "4"):
@@ -415,13 +423,14 @@ def gestionEmpresas():
             print("\n-----Volviendo al menú administrativo-----\n")
             return administracion()
         else:
-            print("La opcion digitada no se encuentra. Por favor intenta otra vez")
+            print("La opción digitada no se encuentra. Por favor intenta otra vez")
             return gestionEmpresas()
     else:
-        print("La opcion digitada no se encuentra. Por favor intenta otra vez")
+        print("La opción digitada no se encuentra. Por favor intenta otra vez")
         return gestionEmpresas()
             
 #-----------------------------------------------------------------------------------
+#Esta función añade al archivo la empresa
 """
 Nombre: añadirEmpresa
 Entrada: la cedula,nombre y ubicacion de la empresa
@@ -446,14 +455,14 @@ def añadirEmpresa(cedula, nombre, ubicacion):
         print("\nEsta cedula ya está registrada, intente de nuevo")
         return gestionEmpresas()
 
-    
 #---------------------------------------------------------------------------
+#Esta funcion borra la empresa
 """
 Nombre: borrarEmpresa
 Entrada: la cedula de la empresa
 Parametros: cedula
 Salida:Que la empresa se ha borrado exitosamente
-Restricciones: sin restricciones
+Restricciones: Debe ser una empresa registrada
 """
 def borrarEmpresa(cedula):
     Empresas = open("Empresas.txt")
@@ -475,6 +484,7 @@ def borrarEmpresa(cedula):
         return gestionEmpresas()
     
 #---------------------------------------------------------------------------
+#Esta funcion modifica la empresa
 """
 Nombre: modificarEmpresas
 Entrada: la cedula de la empresa
@@ -521,6 +531,7 @@ def modificarEmpresas_aux(cedula,nombre,ubicacion):
         return gestionEmpresas()
     
 #--------------------------------------------------------------------------------
+#Estas funciones imprime el contenido en pantalla, cada una muestra distintas partes del archivo
 """
 Nombre: mostrarEmpresas
 Entrada: sin entrada
@@ -567,6 +578,7 @@ def mostrarTransportes_aux():
     print("\nEstos son todas tus Transportes.\n")
     return ""
 #-------------------------------------------------------------------------------
+#Para mostrar los viajes que estan en el archivo
 def mostrarViajes():
     print("\n")
     Viajes = open("Viajes.txt", "r")
@@ -575,12 +587,13 @@ def mostrarViajes():
     return gestionViaje()
 
 #--------------------------------------------------------------------------------
+#Este es el menu gestion Transporte
 """
 Nombre: gestionTransporteEmpresa
-Entrada:
-Parametros:
-Salida:
-Restricciones:
+Entrada: no posee
+Parametros: no posee
+Salida: depende la opcion que ingrese el usuario
+Restricciones: debe elegir una opcion de las que se muestra en el menú
 """
 def gestionTransporteEmpresa():
     print("\n----------GESTION DE TRANSPORTE----------\n")
@@ -632,12 +645,13 @@ def gestionTransporteEmpresa():
 
 
 #------------------------------------------------------------------------------------------
+#Esta funcion añade un transporte al archivo Transportes.txt
 """
 Nombre: añadirTransporte
-Entrada:
-Parametro:
-Salida:
-Restricciones:
+Entrada: los datos para añadir el transporte
+Parametro: placa,marca,modelo,año,empresa,avip,anormal,aeconomica
+Salida: que se añadió el transporte
+Restricciones: todas las matriculas deben ser distintas
 """
 def añadirTransporte(placa,marca,modelo,año,empresa,avip,anormal,aeconomica):
     Transportes=open("Transportes.txt")
@@ -662,12 +676,13 @@ def añadirTransporte(placa,marca,modelo,año,empresa,avip,anormal,aeconomica):
         return gestionTransporteEmpresa()
 
 #--------------------------------------------------------------------------------------------
+#Esta funcion elimina un transporte
 """
 Nombre: eliminarTransporte
-Entrada: placa
+Entrada: la matricula
 Parametro: placa
-Salida: 
-Restricciones:
+Salida: transporte borrado
+Restricciones: la placa debe estar en el archivo
 """
 def eliminarTransporte(placa):
     Transportes = open("Transportes.txt")
@@ -689,12 +704,13 @@ def eliminarTransporte(placa):
         return gestionTransporteEmpresa()
 
 #----------------------------------------------------------------------------------------------
+#Esta funcion modifica un transporte
 """
 Nombre: modificarTransporte
-Entrada: 
-Parametros:
-Salida:
-Restricciones:
+Entrada: la matricula
+Parametros: placa
+Salida: que la placa que se modificó
+Restricciones: la placa debe estar registrada
 """
 def modificarTransporte(placa):
     Transportes = open("Transportes.txt")
@@ -743,12 +759,13 @@ def modificarTransporte_aux(placa,marca,modelo,año,empresa,avip,anormal,aeconom
         return gestionTransporteEmpresa()
     
 #-----------------------------------------------------------------------------------------------------------------
+#ESTE ES EL MENÚ DE GESTION DE VIAJES
 """
-Nombre:
-Entrada:
-Parametros:
-Salida:
-Restricciones:
+Nombre: gestionViaje
+Entrada: una opcion a digitar
+Parametros: no posee
+Salida: depende la opcion de lo que el usuario elija
+Restricciones: la opcion debe estar en el menú
 """
 def gestionViaje():
     print("\n----------GESTION DE VIAJES----------\n")
@@ -790,6 +807,7 @@ def gestionViaje():
                 return modificarViaje(numv)
             else:
                 print("Error: Este espacio no puede ser vacío.\nDebedigitar el numero de viaje.\nVuelva intentarlo.")
+                return gestionViaje()
         elif(eleccion == "4"):
             print(mostrarViajes())
             return gestionViaje()
@@ -801,12 +819,13 @@ def gestionViaje():
             return gestionViajes()
 
 #----------------------------------------------------------------------------------------------------------------------------------
+#Esta funcion es para añadir un viaje
 """
 Nombre: añadirViaje
-Entrada:
-Parametro:
-Salida:
-Restricciones:
+Entrada: los datos del viaje
+Parametro: numv,ciudadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transporte,avip,anormal,aeconomico
+Salida: que se agregó el viaje
+Restricciones: no posee
 """
 def añadirViaje(numv,ciudadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transporte,avip,anormal,aeconomico):
     Viajes = open("Viajes.txt")
@@ -829,12 +848,13 @@ def añadirViaje(numv,ciudadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transpor
     return gestionViaje()
 
 #---------------------------------------------------------------------------------------------------------------------------------
+#Esta funcio elimina un viaje registrado en el sistema
 """
 Nombre: borrarViaje
-Entrada:
-Parametro:
-Salida:
-Restricciones:
+Entrada: numero de viaje
+Parametro: numv
+Salida: que el viaje se borró
+Restricciones: El numero de viaje debe estar registrado
 """
 def borrarViaje(numv):
     Viajes = open("Viajes.txt")
@@ -856,12 +876,13 @@ def borrarViaje(numv):
         return gestionViaje()
 
 #------------------------------------------------------------------------------------------------------------------
+#Esta funcion modifica un viaje
 """
 Nombre: modificarViaje
-Entrada:
-Parametro:
-Salida:
-Restricciones:
+Entrada: numero de viaje 
+Parametro: numv
+Salida: que se modificó el viaje
+Restricciones: el 
 """
 def modificarViaje(numv):
     Viajes = open("Viajes.txt")
@@ -890,6 +911,9 @@ def modificarViaje(numv):
         anormal = input("Digite el nuevo monto de asientos clase normales que cuenta el transporte: ")
         aeconomico = input("Digite el nuevo monto de asientos clase economicos que cuenta el transporte: ")
         return modificarViaje_aux(numv,ciudadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transporte,avip,anormal,aeconomico)
+    else:
+        print("\nEl numero de viaje ingresado, no está registrado\n")
+        return gestionViaje()
 
 def modificarViaje_aux(numv,ciudadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,transporte,avip,anormal,aeconomico):
     Viajes = open("Viajes.txt")
@@ -910,12 +934,53 @@ def modificarViaje_aux(numv,ciudadI,fechaS,horaS,ciudadV,fechaV,horaV,empresa,tr
     Viajes.close()
     print("\n---NUEVO VIAJE MODIFICADO CORRECTAMENTE---\n")
     return gestionViaje()        
-    
-    
+
+#----------------------------------------------------------------------------------------------------------
+"""
+Nombre: consultarHistorialReservaciones
+Entrada: no posee
+Parametro: no posee
+Salida: distintas opciones
+Restricciones: debe elegir una opcion del menú
+"""
+def consultarHistorialReservaciones():
+    print("\nFalta codigo.")
+    print("No se logró concluir esta parte.\n")
+    return administracion()
+
+#-------------------------------------------------------------------------------------------
+"""
+Nombre: estadisticaViaje
+Entrada: no posee
+Parametro: no posee
+Salida: distintas opciones
+Restricciones: debe elegir una opcion del menú
+"""
+def estadisticaViaje():
+
+    print("\nFalta codigo.")
+    print("No se logró concluir esta parte.\n")
+    return administracion()
+
+#---------------------------------------------------------------------------
+"""
+Nombre: usuarioNormal
+Entrada: no posee
+Parametro: no posee
+Salida: distintas opciones
+Restricciones: debe elegir una opcion del menú
+"""
+def usuarioNormal():
+    print("\nFalta codigo.")
+    print("No se logró concluir esta parte.\n")
+    return sistemaDeReservacion()
 
 
 
-
-##########################################################################################################################################################################
-sistemaDeReservacion()
-
+#-------------------------
+#########################-
+#########################-
+sistemaDeReservacion()###-
+#########################-
+#########################-
+#-------------------------
